@@ -1,0 +1,3 @@
+package com.denseframe.capturecamerax
+
+object CaptureCameraxPlaceholder

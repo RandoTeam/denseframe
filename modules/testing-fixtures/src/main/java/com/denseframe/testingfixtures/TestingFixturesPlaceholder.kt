@@ -1,0 +1,3 @@
+package com.denseframe.testingfixtures
+
+object TestingFixturesPlaceholder

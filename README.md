@@ -44,27 +44,52 @@ DenseFrame scan data stays local unless the user explicitly exports or shares it
 
 All platform and library APIs must be verified against official documentation or source before implementation.
 
+Current skeleton choices:
+
+- Android Gradle Plugin `8.13.2`.
+- Kotlin `2.2.21`.
+- Gradle wrapper `8.14.3`.
+- Compile SDK `36`, target SDK `36`, minimum SDK `26`.
+- Compose BOM `2026.02.00` and Activity Compose `1.10.1`.
+
+These versions were selected from official Android/Gradle guidance and locally available caches. Compose and Activity versions are conservative local choices and should be rechecked against official release notes before broadening the UI stack.
+
 ## Planned Architecture Modules
 
-Gradle modules are not created yet. Planned boundaries:
+Current Gradle modules:
 
 - `app`: entry point, navigation, permissions, and dependency assembly.
-- `core-model`: shared models, state machines, result types, and serialized parameters.
-- `capture-api`: capture contracts independent of ARCore.
-- `capture-arcore`: ARCore adapter for depth, confidence, pose, intrinsics, and tracking.
-- `storage-dfr`: DFR v1 read/write, manifests, checksums, atomic writes, migrations.
-- `reconstruction-core`: validation, unprojection, point cloud MVP, later TSDF/mesh.
-- `viewer`: touch-first 3D viewer and render integration.
-- `export`: DFRZ, PLY, GLB, and diagnostics packaging.
-- `testing-support`: synthetic frames, golden fixtures, failure injection.
+- `modules/design-system`: theme, colors, typography, and reusable Compose components.
+- `modules/project-store`: placeholder for DFR v1 storage.
+- `modules/capture-api`: placeholder for capture contracts.
+- `modules/capture-arcore`: placeholder for the future ARCore adapter.
+- `modules/capture-camerax`: placeholder for future CameraX support if approved.
+- `modules/reconstruction-api`: placeholder for reconstruction contracts.
+- `modules/viewer-filament`: placeholder for future Filament viewer integration.
+- `modules/export`: DFRZ, PLY, GLB, and diagnostics packaging.
+- `modules/diagnostics`: placeholder for diagnostics surfaces and bundles.
+- `modules/testing-fixtures`: placeholder for synthetic fixtures and failure injection helpers.
 
 ## Current Status
 
-This repository contains the control plane, product docs, architecture docs, ADRs, agent definitions, repository skills, and staged Codex prompts. It does not yet contain Android source code or Gradle modules.
+This repository contains the control plane, product docs, architecture docs, ADRs, agent definitions, repository skills, staged Codex prompts, and an initial Android multi-module Compose shell. The shell does not implement scanning, storage, reconstruction, Filament rendering, CameraX, ARCore, Room, analytics, cloud, or network behavior.
 
 ## Development Setup
 
-Setup instructions will be added when the Android skeleton is created. Until then, do not run Gradle; validate documentation changes with shell checks and review.
+Prerequisites:
+
+- JDK 21.
+- Android SDK with platform 36 installed.
+
+Useful commands:
+
+```powershell
+.\gradlew.bat projects
+.\gradlew.bat test
+.\gradlew.bat assembleDebug
+```
+
+The first run may need dependency access if the local Gradle cache is incomplete.
 
 ## Quality Warning
 
