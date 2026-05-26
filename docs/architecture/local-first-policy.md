@@ -9,6 +9,8 @@ DenseFrame app runtime must not require cloud processing.
 - Hidden network calls are prohibited.
 - Analytics SDKs are prohibited.
 - Optional future network features require an ADR, clear UI disclosure, and user action.
+- ARCore and Google Play Services for AR availability/install/update checks are OS/service-level runtime dependencies. They must remain visible to the user and must not become hidden app-owned network behavior.
+- DenseFrame must not add app-owned cloud processing, hidden app network calls, analytics SDKs, Cloud Anchors, Geospatial APIs, or remote reconstruction as part of capture.
 
 ## Allowed Local Behavior
 

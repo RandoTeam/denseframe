@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.denseframe.app.capture.ArCoreCaptureCoordinator
+import com.denseframe.app.capture.ArCoreCaptureUiState
 import com.denseframe.app.ui.screens.CaptureShellScreen
 import com.denseframe.app.ui.screens.ModeSelectScreen
 import com.denseframe.app.ui.screens.ProcessingScreen
@@ -15,7 +17,10 @@ import com.denseframe.app.ui.screens.SceneViewerShellScreen
 import com.denseframe.designsystem.DenseFrameTheme
 
 @Composable
-fun DenseFrameApp() {
+fun DenseFrameApp(
+    captureCoordinator: ArCoreCaptureCoordinator? = null,
+    onRequestCameraPermission: () -> Unit = {},
+) {
     var destination by remember { mutableStateOf(ShellDestination.Gallery) }
 
     when (destination) {
@@ -28,10 +33,18 @@ fun DenseFrameApp() {
             onModeSelected = { destination = ShellDestination.Capture },
         )
         ShellDestination.Capture -> CaptureShellScreen(
+            state = captureCoordinator?.state?.value ?: ArCoreCaptureUiState(),
+            onRequestPermission = onRequestCameraPermission,
+            onStart = { captureCoordinator?.startCapture() },
             onStop = { destination = ShellDestination.SaveReview },
+            onStopCapture = { captureCoordinator?.stopCapture() },
             onBack = { destination = ShellDestination.ModeSelect },
+            captureSurface = {
+                captureCoordinator?.let { com.denseframe.app.ui.ArCoreCaptureSurface(it) }
+            },
         )
         ShellDestination.SaveReview -> SaveReviewScreen(
+            captureState = captureCoordinator?.state?.value ?: ArCoreCaptureUiState(),
             onProcess = { destination = ShellDestination.Processing },
             onBack = { destination = ShellDestination.Capture },
         )

@@ -1,0 +1,25 @@
+package com.denseframe.app.capture
+
+data class ArCoreCaptureUiState(
+    val cameraPermission: String = "Unknown",
+    val availability: String = "Not checked",
+    val depthSupport: String = "Not checked",
+    val selectedDepthMode: String = "None",
+    val sessionState: String = "Idle",
+    val trackingState: String = "Unknown",
+    val trackingFailureReason: String = "None",
+    val lastFrameResult: String = "No frame",
+    val depthFreshness: String = "NO_DEPTH",
+    val acceptedFrames: Int = 0,
+    val rejectedFrames: Int = 0,
+    val droppedFrames: Int = 0,
+    val skippedFpsThrottle: Int = 0,
+    val noDepthFrames: Int = 0,
+    val storageFailedFrames: Int = 0,
+    val storageWriteError: String? = null,
+    val elapsedMillis: Long = 0,
+    val projectId: String? = null,
+    val projectPath: String? = null,
+    val isCapturing: Boolean = false,
+    val canStart: Boolean = true,
+)

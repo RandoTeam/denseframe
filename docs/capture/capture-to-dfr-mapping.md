@@ -22,6 +22,8 @@
 | `ConfidenceFrame.confidenceU8` | `confidence_u8.bin` | Written only when present. Format: `CONFIDENCE_U8_LINEAR_0_255`. |
 | `ColorFramePayload` | `payloads.colorFormat` | Metadata only until a real color byte owner exists; no `color.yuv` is fabricated. |
 
+For the ARCore MVP, only tracked frames with both raw depth and confidence are written by default. No-depth and tracking-lost events update HUD metrics but are not fabricated into DFR payloads.
+
 ## Validation
 
 The bridge rejects writes when:

@@ -9,7 +9,7 @@ This document defines the current Android skeleton boundaries. Placeholder modul
 - `modules/project-store`: DenseFrame Raw Project read/write, manifests, checksums, atomic writes, optional payload references, validation, and migrations.
 - `modules/capture-api`: pure capture contracts independent of ARCore, CameraX, Android camera APIs, and storage.
 - `modules/capture-store`: deterministic adapter from `capture-api` `FramePacket` values to `project-store` DFR v1 frame writes. It may depend on `capture-api` and `project-store`; neither dependency points back to it.
-- `modules/capture-arcore`: placeholder for future ARCore depth adapter. No ARCore dependency yet.
+- `modules/capture-arcore`: real early-alpha ARCore raw-depth adapter. Owns ARCore availability, install/update mapping, depth support selection, session control, image packing, pose/intrinsics/tracking mapping, and frame packet creation.
 - `modules/capture-camerax`: placeholder for future CameraX integration if needed. No CameraX dependency yet.
 - `modules/reconstruction-api`: placeholder for deterministic reconstruction contracts and serializable parameters.
 - `modules/viewer-filament`: placeholder for future Filament viewer integration. No Filament dependency yet.
