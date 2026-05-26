@@ -1,6 +1,6 @@
 # GitHub Repository Setup
 
-Repository name: `denseframe`
+Repository name: `RandoTeam/denseframe`
 
 Description:
 
@@ -20,13 +20,13 @@ After GitHub CLI authentication:
 
 ```powershell
 gh auth login
-gh repo create denseframe --public --source=. --remote=origin --push --description "Local-first deterministic Android 3D scanning: ARCore raw depth, DFR raw projects, point clouds, TSDF/GLB roadmap."
+gh repo create RandoTeam/denseframe --public --source=. --remote=origin --push --description "Local-first deterministic Android 3D scanning: ARCore raw depth, DFR raw projects, point clouds, TSDF/GLB roadmap."
 ```
 
 If the repository already exists:
 
 ```powershell
-gh repo view OWNER/denseframe --json sshUrl,url
+gh repo view RandoTeam/denseframe --json sshUrl,url
 git remote add origin <chosen-url>
 git push -u origin main
 git push --follow-tags

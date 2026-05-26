@@ -12,7 +12,7 @@
   <img alt="Jetpack Compose" src="https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4">
   <img alt="Local-first" src="https://img.shields.io/badge/local--first-no%20cloud%20required-5FE1C8">
   <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue">
-  <img alt="Android CI" src="https://img.shields.io/badge/Android%20CI-configured-informational">
+  <a href="https://github.com/RandoTeam/denseframe/actions/workflows/android-ci.yml"><img alt="Android CI" src="https://github.com/RandoTeam/denseframe/actions/workflows/android-ci.yml/badge.svg?branch=main"></a>
 </p>
 
 # DenseFrame
