@@ -1,0 +1,52 @@
+# Android / Kotlin / Gradle
+.gradle/
+build/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.hprof
+local.properties
+
+# CMake / native
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+*.so
+*.o
+*.obj
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# DenseFrame scan/export data
+*.dfrz
+*.ply
+*.glb
+*.gltf
+*.obj
+*.fbx
+*.las
+*.pts
+*.xyz
+scan-data/
+sample-scans/
+benchmark-output/
+.codex-log/
+
+# Logs and temp
+*.log
+*.tmp
+*.temp

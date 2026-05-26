@@ -1,0 +1,19 @@
+# Month-One Risk Register
+
+| Risk | Severity | Likelihood | Mitigation | Owner agent | First detection signal | Required test/doc |
+| --- | --- | --- | --- | --- | --- | --- |
+| ARCore support gaps | High | Medium | Verify official APIs, add runtime support checks, provide unsupported-device UX | `api_verifier`, `capture_engine` | Support check fails or depth unavailable on OnePlus 13/manual target | ARCore support doc, unsupported state test/manual script |
+| Tracking loss | High | High | Explicit tracking states, pause frame acceptance, relocalization guidance | `capture_engine`, `viewer_ux` | HUD shows limited/lost tracking or pose quality drops | Capture state tests, tracking loss manual scenario |
+| Noisy depth | High | High | Confidence thresholds, invalid sample metrics, quality HUD, deterministic filtering | `capture_engine`, `reconstruction_engine` | High invalid sample count or low confidence frames | Synthetic depth tests, confidence filtering docs |
+| Reflective/transparent surfaces | Medium | High | Warn in mode instructions and HUD quality guidance | `viewer_ux`, `oss_docs` | User sees low confidence or broken geometry on glossy/transparent object | UX copy review, manual object scan notes |
+| Storage growth | High | Medium | Preflight storage check, live storage HUD, bounded capture, cleanup partial files | `storage_engine`, `capture_engine` | Project size grows faster than available storage budget | Storage pressure test, DFR write policy doc |
+| Out of memory | High | Medium | Streaming readers, bounded queues, voxel/downsample limits, memory checks | `reconstruction_engine`, `qa_hardening` | OOM, slow GC, or viewer load failure | Memory test plan, large-project streaming test |
+| Thermal throttling | Medium | Medium | Thermal HUD state, pause guidance, benchmark longer captures | `android_platform`, `qa_hardening` | Device reports thermal warning or capture FPS drops | Manual thermal scenario, benchmark note |
+| Process death during capture | High | Medium | Temp writes, fsync where practical, atomic rename, checksums, recovery path | `storage_engine`, `qa_hardening` | App relaunch finds incomplete frame or manifest | Failure injection test, DFR recovery doc |
+| Process death during processing | High | Medium | Checkpointing, serialized parameters, restartable jobs | `reconstruction_engine`, `qa_hardening` | Processing restarts from beginning or corrupts artifact | Processing checkpoint test/doc |
+| Codex API hallucination | High | Medium | Use API verification skill and official docs before implementation | `api_verifier`, `orchestrator` | Unverified method, dependency, permission, or lifecycle claim appears in diff | API verification notes in PR/task |
+| Scope creep | Medium | High | Keep month-one roadmap and explicit deferrals visible | `orchestrator`, `oss_docs` | New task adds mesh quality, cloud, sharing, neural rendering, or measurements | Roadmap review, ADR requirement |
+| Weak UX | High | Medium | Follow visual system, mode cards, HUD, save review, viewer controls | `viewer_ux` | Screens look placeholder or fail empty/error states | UX checklist, manual screenshot review after app exists |
+| Lack of real-device testing | High | High | OnePlus 13 primary target, manual categories, capture logs | `qa_hardening`, `capture_engine` | Only emulator or desktop checks have run | Device matrix update, manual test report |
+| Export corruption or partial files | High | Medium | Temp-file-first export, cancellation cleanup, checksums/metrics | `storage_engine`, `qa_hardening` | Cancelled export leaves visible partial output | Export cancellation test/doc |
+| Viewer performance collapse | Medium | Medium | Bounded point cloud size, progressive loading plan, unsupported state | `viewer_ux`, `reconstruction_engine` | Viewer frame drops or fails on MVP artifact | Viewer performance note, point budget test |
