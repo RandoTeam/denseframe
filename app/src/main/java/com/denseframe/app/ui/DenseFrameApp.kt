@@ -1,6 +1,7 @@
 package com.denseframe.app.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,17 +33,22 @@ fun DenseFrameApp(
             onBack = { destination = ShellDestination.Gallery },
             onModeSelected = { destination = ShellDestination.Capture },
         )
-        ShellDestination.Capture -> CaptureShellScreen(
-            state = captureCoordinator?.state?.value ?: ArCoreCaptureUiState(),
-            onRequestPermission = onRequestCameraPermission,
-            onStart = { captureCoordinator?.startCapture() },
-            onStop = { destination = ShellDestination.SaveReview },
-            onStopCapture = { captureCoordinator?.stopCapture() },
-            onBack = { destination = ShellDestination.ModeSelect },
-            captureSurface = {
-                captureCoordinator?.let { com.denseframe.app.ui.ArCoreCaptureSurface(it) }
-            },
-        )
+        ShellDestination.Capture -> {
+            LaunchedEffect(captureCoordinator) {
+                captureCoordinator?.refreshReadiness()
+            }
+            CaptureShellScreen(
+                state = captureCoordinator?.state?.value ?: ArCoreCaptureUiState(),
+                onRequestPermission = onRequestCameraPermission,
+                onStart = { captureCoordinator?.startCapture() },
+                onStop = { destination = ShellDestination.SaveReview },
+                onStopCapture = { captureCoordinator?.stopCapture() },
+                onBack = { destination = ShellDestination.ModeSelect },
+                captureSurface = {
+                    captureCoordinator?.let { com.denseframe.app.ui.ArCoreCaptureSurface(it) }
+                },
+            )
+        }
         ShellDestination.SaveReview -> SaveReviewScreen(
             captureState = captureCoordinator?.state?.value ?: ArCoreCaptureUiState(),
             onProcess = { destination = ShellDestination.Processing },

@@ -53,6 +53,8 @@ class ArCoreCaptureCoordinator(
     private var storageFailures = 0
     private var droppedQueueFull = 0
     private var running = true
+    private var cameraTextureName: Int? = null
+    private var displayGeometry: DisplayGeometry? = null
 
     init {
         writeExecutor.execute {
@@ -93,6 +95,22 @@ class ArCoreCaptureCoordinator(
         updateState { it.copy(cameraPermission = if (granted) "Granted" else "Denied", canStart = granted) }
     }
 
+    fun refreshReadiness() {
+        refreshPermissionState()
+        updateState { it.copy(availability = "Checking") }
+        val availability = availabilityChecker.check(activity)
+        updateState {
+            it.copy(
+                availability = availability.displayName(),
+                canStart = hasCameraPermission() && availability !in listOf(
+                    ArCoreAvailabilityStatus.UnsupportedDevice,
+                    ArCoreAvailabilityStatus.TimedOut,
+                    ArCoreAvailabilityStatus.Unknown,
+                ),
+            )
+        }
+    }
+
     fun startCapture(): ArCoreSessionError? {
         refreshPermissionState()
         if (!hasCameraPermission()) {
@@ -130,6 +148,10 @@ class ArCoreCaptureCoordinator(
             val error = com.denseframe.capturearcore.ArCoreExceptionMapper.map(it)
             updateFailure(error)
             return error
+        }
+        cameraTextureName?.let(sessionController::setCameraTextureName)
+        displayGeometry?.let {
+            sessionController.setDisplayGeometry(it.rotation, it.width, it.height)
         }
         val capability = sessionController.configureDepth()
         updateState {
@@ -186,10 +208,12 @@ class ArCoreCaptureCoordinator(
     }
 
     fun onGlSurfaceCreated(textureName: Int) {
+        cameraTextureName = textureName
         sessionController.setCameraTextureName(textureName)
     }
 
     fun onDisplayGeometryChanged(rotation: Int, width: Int, height: Int) {
+        displayGeometry = DisplayGeometry(rotation, width, height)
         sessionController.setDisplayGeometry(rotation, width, height)
     }
 
@@ -317,4 +341,10 @@ class ArCoreCaptureCoordinator(
     }
 
     private fun Path.displayPath(): String = fileName?.toString() ?: toString()
+
+    private data class DisplayGeometry(
+        val rotation: Int,
+        val width: Int,
+        val height: Int,
+    )
 }
