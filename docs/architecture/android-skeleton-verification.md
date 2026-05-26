@@ -12,7 +12,7 @@ These setup assumptions were checked before creating the initial Android skeleto
 ## Local Environment Observed
 
 - JDK: Microsoft OpenJDK 21.
-- Android SDK: `ANDROID_HOME` and `ANDROID_SDK_ROOT` point to `C:\Users\Ilia\AppData\Local\Android\Sdk`.
+- Android SDK: `ANDROID_HOME` and `ANDROID_SDK_ROOT` were configured locally.
 - Installed SDK platforms include API 36.
 - No system `gradle` executable was on PATH.
 - A local Gradle 8.14.3 distribution was available under the Gradle wrapper cache and was used to generate the project wrapper.

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="160" viewBox="0 0 720 160" role="img" aria-labelledby="title desc">
+  <title id="title">DenseFrame logo</title>
+  <desc id="desc">Original DenseFrame wordmark with a geometric depth-frame symbol.</desc>
+  <rect width="720" height="160" rx="28" fill="#080B12"/>
+  <g transform="translate(42 32)">
+    <rect x="0" y="0" width="96" height="96" rx="22" fill="#101722" stroke="#5FE1C8" stroke-width="3"/>
+    <path d="M24 29 L48 16 L72 29 L72 67 L48 80 L24 67 Z" fill="none" stroke="#E8F2FF" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M48 16 V80 M24 29 L48 43 L72 29 M24 67 L48 52 L72 67" fill="none" stroke="#5FE1C8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="48" cy="48" r="5" fill="#7AA7FF"/>
+  </g>
+  <text x="170" y="75" fill="#F4F8FF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="48" font-weight="760">DenseFrame</text>
+  <text x="173" y="112" fill="#9FB0C8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="500">local Android 3D scanning</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">DenseFrame app icon concept</title>
+  <desc id="desc">Original geometric scan-frame icon concept for DenseFrame.</desc>
+  <rect width="512" height="512" rx="112" fill="#080B12"/>
+  <rect x="96" y="96" width="320" height="320" rx="72" fill="#101722" stroke="#2A374A" stroke-width="8"/>
+  <path d="M160 178 L256 126 L352 178 L352 334 L256 386 L160 334 Z" fill="none" stroke="#F4F8FF" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M256 126 V386 M160 178 L256 234 L352 178 M160 334 L256 278 L352 334" fill="none" stroke="#5FE1C8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="256" cy="256" r="24" fill="#7AA7FF"/>
+</svg>

@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest a local-first DenseFrame feature.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What user problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_behavior
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: mvp_relevance
+    attributes:
+      label: MVP relevance
+      options:
+        - Month-one MVP
+        - Later deterministic pipeline
+        - Experimental
+        - Unsure
+    validations:
+      required: true
+  - type: textarea
+    id: local_first
+    attributes:
+      label: Local-first impact
+      description: Does this require network, cloud processing, accounts, analytics, or external services?
+    validations:
+      required: true

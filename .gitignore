@@ -8,6 +8,8 @@ captures/
 *.apk
 *.ap_
 *.aab
+*.jks
+*.keystore
 *.dex
 *.class
 *.hprof

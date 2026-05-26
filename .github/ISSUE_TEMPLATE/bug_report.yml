@@ -1,0 +1,71 @@
+name: Bug report
+description: Report a reproducible DenseFrame bug.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: input
+    id: device_model
+    attributes:
+      label: Device model
+      placeholder: OnePlus 13, Pixel 9 Pro, etc.
+    validations:
+      required: true
+  - type: input
+    id: android_version
+    attributes:
+      label: Android version
+    validations:
+      required: true
+  - type: input
+    id: app_version
+    attributes:
+      label: App version or commit
+    validations:
+      required: true
+  - type: dropdown
+    id: capture_mode
+    attributes:
+      label: Capture mode
+      options:
+        - Object
+        - Room
+        - Freeform
+        - Preview
+        - Not capture-related
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: "1. Open...\n2. Tap...\n3. Observe..."
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or diagnostics
+      description: Attach logs or diagnostics when safe to share.
+  - type: dropdown
+    id: dfr_share
+    attributes:
+      label: Can the DFR project be shared?
+      options:
+        - "Yes"
+        - "No"
+        - "Maybe after redaction"
+        - "Not applicable"
+    validations:
+      required: true

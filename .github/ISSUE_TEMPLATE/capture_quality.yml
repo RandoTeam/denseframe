@@ -1,0 +1,69 @@
+name: Capture quality report
+description: Report scan, depth, or tracking quality problems.
+title: "[Capture quality]: "
+labels: ["capture-quality"]
+body:
+  - type: input
+    id: device
+    attributes:
+      label: Device
+    validations:
+      required: true
+  - type: dropdown
+    id: lighting
+    attributes:
+      label: Lighting
+      options:
+        - Bright indoor
+        - Dim indoor
+        - Outdoor shade
+        - Outdoor direct sun
+        - Mixed lighting
+    validations:
+      required: true
+  - type: input
+    id: scene_type
+    attributes:
+      label: Object or room type
+      placeholder: matte object, small room, glossy furniture, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: surfaces
+    attributes:
+      label: Reflective or transparent surfaces
+      description: Note glossy, glass, mirrors, black surfaces, or thin geometry.
+  - type: dropdown
+    id: motion_speed
+    attributes:
+      label: Motion speed
+      options:
+        - Slow
+        - Moderate
+        - Fast
+        - Mixed
+    validations:
+      required: true
+  - type: input
+    id: tracking_state
+    attributes:
+      label: Tracking state seen
+      placeholder: tracking, limited, lost, unknown
+  - type: textarea
+    id: depth_confidence
+    attributes:
+      label: Depth confidence symptoms
+      placeholder: holes, noisy edges, low confidence, dropped frames, drift, etc.
+    validations:
+      required: true
+  - type: dropdown
+    id: sample_frame
+    attributes:
+      label: Sample frame availability
+      options:
+        - DFR sample can be shared
+        - Screenshots only
+        - Cannot share sample
+        - Not available yet
+    validations:
+      required: true

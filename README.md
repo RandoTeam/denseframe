@@ -1,81 +1,99 @@
+<p align="center">
+  <img src="docs/assets/denseframe-logo.svg" alt="DenseFrame logo" width="560">
+</p>
+
+<p align="center">
+  <img src="docs/assets/denseframe-banner.svg" alt="DenseFrame local scan to DFR to point cloud pipeline">
+</p>
+
+<p align="center">
+  <img alt="Android" src="https://img.shields.io/badge/Android-early%20alpha-3DDC84">
+  <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.2.21-7F52FF">
+  <img alt="Jetpack Compose" src="https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4">
+  <img alt="Local-first" src="https://img.shields.io/badge/local--first-no%20cloud%20required-5FE1C8">
+  <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue">
+  <img alt="Android CI" src="https://img.shields.io/badge/Android%20CI-configured-informational">
+</p>
+
 # DenseFrame
 
-DenseFrame is a local-first Android 3D scanning app for capturing objects or rooms, saving raw scan projects, processing them on-device, and exporting raw or 3D scene files.
+DenseFrame is a local-first Android 3D scanning app for capturing ARCore raw depth into reproducible DFR projects and processing them into point clouds, meshes, and GLB scenes.
 
-## Project Goals
+Status: early alpha and under active development. The repository currently contains the Android Compose shell, DFR raw project storage, pure capture state machines, and capture-to-storage mapping. The ARCore adapter and reconstruction pipeline are next.
 
-- Make the primary flow simple: open app, scan, save raw project, process locally, view, export.
-- Preserve raw capture data before reconstruction so work can be resumed and reprocessed.
-- Keep reconstruction deterministic for the same raw project, code version, and serialized parameters where practical.
-- Provide a polished consumer-grade Android UX with clear capture guidance and touch-first viewing.
-- Use explicit state machines, crash-safe storage, bounded queues, and restartable long-running jobs.
+## Product Flow
+
+```text
+Scan -> Save Raw -> Process Locally -> View -> Export
+```
+
+DenseFrame is built around a simple promise: capture locally, preserve raw data first, process deterministically, and export explicitly.
+
+## MVP Scope
+
+- ARCore raw depth capture.
+- DenseFrame Raw Project v1 (`DFR`) folder format.
+- Local processing with deterministic parameters.
+- Point cloud MVP.
+- Viewer and export roadmap for mesh and GLB workflows.
 
 ## Non-Goals
 
-- Required cloud reconstruction or runtime cloud processing.
-- Hidden network calls or analytics SDKs.
-- Community sharing, feeds, accounts, or cloud sync.
-- Gaussian splatting, neural rendering, texture baking, measurements, or TSDF mesh quality in the first MVP.
-- Copying proprietary assets, product names, screenshots, icons, branding, code, or implementation details from public reference products.
+- No required cloud processing.
+- No hidden network calls.
+- No analytics SDKs.
+- No proprietary clone of Polycam, KIRI Engine, Scaniverse, or other scanning products.
+- No neural or splat mainline until the deterministic pipeline is stable.
+- No accounts, feeds, cloud sync, or community sharing in the month-one MVP.
 
-## Local-First Promise
+## Architecture
 
-DenseFrame scan data stays local unless the user explicitly exports or shares it. Capture, raw project save, local processing, viewing, and export must work without network access. Future network behavior requires an ADR, clear user-facing disclosure, and an explicit user action.
+```mermaid
+flowchart LR
+    App["app\nCompose shell"] --> Design["modules/design-system"]
+    App --> CaptureApi["modules/capture-api\npure models + state machine"]
+    CaptureApi --> CaptureStore["modules/capture-store\nFramePacket -> DFR"]
+    CaptureStore --> ProjectStore["modules/project-store\nDFR v1 + checksums"]
+    CaptureArcore["modules/capture-arcore\npending adapter"] -. produces .-> CaptureApi
+    ProjectStore --> Reconstruction["modules/reconstruction-api\npending deterministic pipeline"]
+    Reconstruction --> Viewer["modules/viewer-filament\npending viewer"]
+    Reconstruction --> Export["modules/export\npending packaging"]
+```
 
-## MVP User Flow
+## Modules
 
-1. Gallery opens with recent local projects and a primary `New Scan` action.
-2. User selects mode: object scan, room scan, or quick scene scan.
-3. App checks device support, permissions, storage, and thermal readiness.
-4. Capture HUD guides tracking, depth confidence, coverage, motion risk, accepted/dropped frames, storage, and thermal state.
-5. Raw project is written continuously to DFR v1 using crash-safe writes and checksums.
-6. Save Review summarizes captured frames, quality, size, and warnings.
-7. User starts local processing.
-8. Viewer opens with point cloud MVP, project metadata, and touch controls.
-9. User exports DFRZ/raw archive and first scene formats as they become available.
+| Module | Status | Responsibility |
+| --- | --- | --- |
+| `app` | Implemented shell | Compose app entry point and local navigation shell. |
+| `modules/design-system` | Implemented shell | Theme, typography, reusable UI components. |
+| `modules/project-store` | Implemented | DFR v1 models, atomic writes, manifests, checksums, reader, validator. |
+| `modules/capture-api` | Implemented | Pure capture contracts, frame packet models, capture session reducer. |
+| `modules/capture-store` | Implemented | Deterministic `FramePacket` to DFR frame write bridge. |
+| `modules/capture-arcore` | Pending | Future ARCore raw depth adapter. |
+| `modules/capture-camerax` | Placeholder | Future CameraX support only if approved. |
+| `modules/reconstruction-api` | Placeholder | Deterministic reconstruction contracts and parameters. |
+| `modules/viewer-filament` | Placeholder | Future Filament viewer integration. |
+| `modules/export` | Placeholder | DFRZ, PLY, GLB, diagnostics packaging. |
+| `modules/diagnostics` | Placeholder | Diagnostics reports and failure summaries. |
+| `modules/testing-fixtures` | Placeholder | Synthetic fixtures and failure injection helpers. |
 
-## Technical Stack
+## Current Implementation
 
-- Android app target: Kotlin and Jetpack Compose.
-- Capture target: ARCore depth as the first verified capture source.
-- Storage target: DenseFrame Raw Project v1 folder format with manifests, frame payloads, checksums, and versioning.
-- Reconstruction MVP: deterministic validation, keyframe selection, depth unprojection, confidence filtering, and point cloud generation.
-- Viewer/export target: Filament and glTF/GLB after official API and dependency verification.
+- Android multi-module Gradle/Kotlin project.
+- Polished Compose app shell for gallery, mode select, capture shell, save review, processing, viewer shell, and export placeholder.
+- DFR v1 raw project store with crash-safe writes and SHA-256 checksums.
+- Capture API state machine with explicit transitions and tests.
+- Capture-store mapping from synthetic `FramePacket` objects to DFR frame folders.
+- CI workflow configured at `.github/workflows/android-ci.yml`.
 
-All platform and library APIs must be verified against official documentation or source before implementation.
+Pending:
 
-Current skeleton choices:
+- ARCore support checks and raw depth adapter.
+- Real-device capture on OnePlus 13 primary test target.
+- Deterministic point cloud processing.
+- Viewer and export MVP.
 
-- Android Gradle Plugin `8.13.2`.
-- Kotlin `2.2.21`.
-- Gradle wrapper `8.14.3`.
-- Compile SDK `36`, target SDK `36`, minimum SDK `26`.
-- Compose BOM `2026.02.00` and Activity Compose `1.10.1`.
-
-These versions were selected from official Android/Gradle guidance and locally available caches. Compose and Activity versions are conservative local choices and should be rechecked against official release notes before broadening the UI stack.
-
-## Planned Architecture Modules
-
-Current Gradle modules:
-
-- `app`: entry point, navigation, permissions, and dependency assembly.
-- `modules/design-system`: theme, colors, typography, and reusable Compose components.
-- `modules/project-store`: DFR v1 models, atomic writes, manifest/frame IO, streaming checksums, reader, and validator.
-- `modules/capture-api`: pure capture contracts, frame packet models, and deterministic session reducer.
-- `modules/capture-store`: deterministic bridge from pure `FramePacket` models into DFR v1 frame folders using project-store crash-safe writes.
-- `modules/capture-arcore`: placeholder for the future ARCore adapter.
-- `modules/capture-camerax`: placeholder for future CameraX support if approved.
-- `modules/reconstruction-api`: placeholder for reconstruction contracts.
-- `modules/viewer-filament`: placeholder for future Filament viewer integration.
-- `modules/export`: DFRZ, PLY, GLB, and diagnostics packaging.
-- `modules/diagnostics`: placeholder for diagnostics surfaces and bundles.
-- `modules/testing-fixtures`: placeholder for synthetic fixtures and failure injection helpers.
-
-## Current Status
-
-This repository contains the control plane, product docs, architecture docs, ADRs, agent definitions, repository skills, staged Codex prompts, an initial Android multi-module Compose shell, a DFR v1 project-store implementation, pure capture API state machines, and a tested capture-to-DFR storage bridge. The shell does not implement scanning, reconstruction, Filament rendering, CameraX, ARCore, Room, analytics, cloud, or network behavior.
-
-## Development Setup
+## Build
 
 Prerequisites:
 
@@ -86,16 +104,39 @@ Useful commands:
 
 ```powershell
 .\gradlew.bat projects
-.\gradlew.bat test
+.\gradlew.bat test --no-daemon
 .\gradlew.bat assembleDebug
 ```
 
 The first run may need dependency access if the local Gradle cache is incomplete.
 
-## Quality Warning
+## Development Workflow
 
-Scan quality depends on device tracking, lighting, reflective or transparent surfaces, depth confidence, capture distance, capture coverage, thermal state, available storage, and user motion. The app should surface these limits clearly instead of implying every scan can produce a clean model.
+- Branch from `main`.
+- Keep commits small and reviewable.
+- Run relevant Gradle tests before opening a pull request.
+- Update ADRs and docs for architecture, state machine, file-format, capture, reconstruction, or viewer changes.
+- Verify official Android, ARCore, CameraX, Filament, glTF, Gradle, Kotlin, or NDK APIs before implementation.
+- Do not commit secrets, signing keys, build output, APKs, AABs, raw scans, DFRZ files, PLY files, GLB files, or generated caches.
+
+## Screenshots
+
+Screenshots will be added after the first device capture build.
+
+## Quality Caveats
+
+Scan quality depends on tracking, lighting, motion blur, reflective or transparent surfaces, depth confidence, capture coverage, device support, available storage, and thermal state. DenseFrame should surface these limits clearly instead of implying every scan can produce a clean model.
+
+## Documentation
+
+- [Roadmap](ROADMAP.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security](SECURITY.md)
+- [DFR v1 file format](docs/file-format/dfr-v1.md)
+- [Reconstruction pipeline](docs/reconstruction/pipeline.md)
+- [Capture to DFR mapping](docs/capture/capture-to-dfr-mapping.md)
+- [Month-one risk register](docs/risk/month-one-risk-register.md)
 
 ## License
 
-Apache-2.0. See `LICENSE`.
+Apache-2.0. See [LICENSE](LICENSE).
