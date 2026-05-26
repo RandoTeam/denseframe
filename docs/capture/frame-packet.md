@@ -68,7 +68,7 @@ Fields:
 - `depthU16`
 - `metersPerUnit`
 
-`depthU16` contains `width * height * 2` bytes. The pure capture API does not hard-code an ARCore byte order. The storage bridge records the DFR payload format as `DEPTH_U16_MILLIMETERS_LITTLE_ENDIAN` only when the producing adapter has already supplied bytes in that format.
+`depthU16` contains `width * height * 2` bytes. The pure capture API does not hard-code an ARCore byte order. The ARCore adapter supplies deterministic contiguous row-major little-endian millimeter bytes after removing row padding. The storage bridge records the DFR payload format as `DEPTH_U16_MILLIMETERS_LITTLE_ENDIAN` only when the producing adapter has already supplied bytes in that format.
 
 ## ConfidenceFrame
 
@@ -104,6 +104,8 @@ Fields:
 - `blurRisk`
 
 Metric values are normalized to `0..1`. Tracking loss is represented by `TrackingState.LOST` and must also drive the state machine to `PAUSED_TRACKING_LOST` during capture.
+
+The ARCore MVP currently sets motion and blur risk to `0` because no verified device-side estimator is implemented yet. Tracking loss, raw depth absence, and storage drops are surfaced through ARCore result types and HUD metrics.
 
 ## DFR Storage Mapping
 

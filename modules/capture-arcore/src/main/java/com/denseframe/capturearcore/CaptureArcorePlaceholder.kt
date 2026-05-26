@@ -1,3 +1,0 @@
-package com.denseframe.capturearcore
-
-object CaptureArcorePlaceholder

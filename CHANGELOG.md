@@ -11,10 +11,10 @@ This project follows a Keep a Changelog inspired structure. DenseFrame has not s
 - DFR v1 raw project storage with manifests, frame metadata, atomic writes, streaming checksums, reader, validator, and tests.
 - Pure capture API models and deterministic capture session state reducer.
 - Capture-to-DFR bridge module that maps synthetic `FramePacket` values to DFR frame folders through crash-safe project-store APIs.
+- First early-alpha ARCore raw-depth adapter with runtime availability checks, raw depth/confidence packing, FramePacket mapping, DFR write orchestration, and real capture HUD status.
 
 ### Deferred
 
-- ARCore adapter implementation.
 - Deterministic point cloud reconstruction implementation.
 - TSDF mesh, texture baking, measurements, Gaussian splatting, cloud sync, accounts, and sharing.
 

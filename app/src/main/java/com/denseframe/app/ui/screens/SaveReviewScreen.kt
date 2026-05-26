@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.denseframe.app.capture.ArCoreCaptureUiState
 import com.denseframe.designsystem.DenseFrameCard
 import com.denseframe.designsystem.DenseFrameColors
 import com.denseframe.designsystem.DenseFramePrimaryButton
@@ -21,6 +22,7 @@ import com.denseframe.designsystem.StatusPill
 
 @Composable
 fun SaveReviewScreen(
+    captureState: ArCoreCaptureUiState,
     onProcess: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -29,15 +31,18 @@ fun SaveReviewScreen(
             Text("Save review", style = MaterialTheme.typography.headlineMedium)
             DenseFrameCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    Text("Raw project shell", style = MaterialTheme.typography.titleLarge)
+                    Text("Raw project", style = MaterialTheme.typography.titleLarge)
                     Text(
-                        "DFR write path is not implemented yet. This screen defines the review surface for frame counts, warnings, storage size, and restart status.",
+                        "DFR capture writes are saved locally when ARCore produces accepted tracked raw-depth frames. Reconstruction is not implemented yet.",
                         color = DenseFrameColors.TextSecondary,
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        StatusPill("Frames", "Sample", DenseFrameColors.Data)
-                        StatusPill("Checksum", "Pending", DenseFrameColors.Warning)
+                        StatusPill("Accepted", captureState.acceptedFrames.toString(), DenseFrameColors.Data)
+                        StatusPill("Rejected", captureState.rejectedFrames.toString(), DenseFrameColors.Warning)
+                        StatusPill("Dropped", captureState.droppedFrames.toString(), DenseFrameColors.Error)
                     }
+                    Text("Project: ${captureState.projectId ?: "none"}", color = DenseFrameColors.TextSecondary)
+                    Text("Validation: ${captureState.lastFrameResult}", color = DenseFrameColors.TextTertiary)
                 }
             }
             DenseFramePrimaryButton("Start Local Processing", onClick = onProcess, modifier = Modifier.fillMaxWidth())
@@ -50,6 +55,6 @@ fun SaveReviewScreen(
 @Composable
 private fun SaveReviewPreview() {
     DenseFrameTheme {
-        SaveReviewScreen(onProcess = {}, onBack = {})
+        SaveReviewScreen(captureState = ArCoreCaptureUiState(), onProcess = {}, onBack = {})
     }
 }

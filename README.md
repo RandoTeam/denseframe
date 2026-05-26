@@ -19,7 +19,7 @@
 
 DenseFrame is a local-first Android 3D scanning app for capturing ARCore raw depth into reproducible DFR projects and processing them into point clouds, meshes, and GLB scenes.
 
-Status: early alpha and under active development. The repository currently contains the Android Compose shell, DFR raw project storage, pure capture state machines, and capture-to-storage mapping. The ARCore adapter and reconstruction pipeline are next.
+Status: early alpha and under active development. The repository currently contains the Android Compose shell, DFR raw project storage, pure capture state machines, capture-to-storage mapping, and a first ARCore raw-depth adapter. Real-device validation is still required before treating capture quality as field-ready.
 
 ## Product Flow
 
@@ -88,7 +88,7 @@ flowchart LR
 
 Pending:
 
-- ARCore support checks and raw depth adapter.
+- OnePlus 13 manual ARCore raw-depth capture validation.
 - Real-device capture on OnePlus 13 primary test target.
 - Deterministic point cloud processing.
 - Viewer and export MVP.
@@ -135,6 +135,7 @@ Scan quality depends on tracking, lighting, motion blur, reflective or transpare
 - [DFR v1 file format](docs/file-format/dfr-v1.md)
 - [Reconstruction pipeline](docs/reconstruction/pipeline.md)
 - [Capture to DFR mapping](docs/capture/capture-to-dfr-mapping.md)
+- [ARCore runtime](docs/architecture/arcore-runtime.md)
 - [Month-one risk register](docs/risk/month-one-risk-register.md)
 
 ## License

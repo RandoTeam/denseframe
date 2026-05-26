@@ -23,7 +23,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":modules:capture-api"))
+    implementation(project(":modules:capture-arcore"))
+    implementation(project(":modules:capture-store"))
     implementation(project(":modules:design-system"))
+    implementation(project(":modules:project-store"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

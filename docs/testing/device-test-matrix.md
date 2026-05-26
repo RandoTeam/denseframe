@@ -3,6 +3,7 @@
 ## Primary Real Device
 
 - OnePlus 13: primary month-one real-device test target.
+- Manual ARCore raw-depth checklist: `docs/testing/manual-arcore-capture-oneplus13.md`.
 
 ## Manual Test Categories
 
@@ -19,6 +20,7 @@
 - Process death during capture.
 - Process death during processing.
 - Raw project validation and recovery.
+- ARCore availability, install/update, permission, selected depth mode, tracking, depth freshness, and DFR payload validation.
 - Point cloud preview.
 - Mesh viewer gestures.
 - Export success and cancellation.

@@ -11,3 +11,10 @@ android {
         minSdk = 26
     }
 }
+
+dependencies {
+    implementation(project(":modules:capture-api"))
+    implementation(libs.google.ar.core)
+
+    testImplementation(libs.junit)
+}
