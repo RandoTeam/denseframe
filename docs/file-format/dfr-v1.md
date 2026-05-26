@@ -10,9 +10,9 @@ project.dfr/
   frames/
     00000001/
       frame.json
-      color.yuv
-      depth_u16.bin
-      confidence_u8.bin
+      color.yuv              # optional when color bytes are present
+      depth_u16.bin          # optional when depth is present
+      confidence_u8.bin      # optional when confidence is present
       checksum.sha256
   reconstruction/
   thumbnails/
@@ -84,14 +84,23 @@ Each frame has a `frame.json` and a matching entry in `manifest.json`.
 - `depthConfidence`
 - `coverage`
 - `motionRisk`
+- `blurRisk`
 - `accepted`
 - `dropReason`
 
 ## FramePayloadRefs
 
-- `colorYuv`: `color.yuv`
-- `depthU16`: `depth_u16.bin`
-- `confidenceU8`: `confidence_u8.bin`
+- `colorYuv`: `color.yuv` or `null` when color bytes are absent.
+- `depthU16`: `depth_u16.bin` or `null` when depth bytes are absent.
+- `confidenceU8`: `confidence_u8.bin` or `null` when confidence bytes are absent.
+- `colorFormat`: optional color payload format string or metadata-only format string.
+- `depthFormat`: optional depth payload format string.
+- `confidenceFormat`: optional confidence payload format string.
+
+Current capture-to-storage format names:
+
+- `DEPTH_U16_MILLIMETERS_LITTLE_ENDIAN`
+- `CONFIDENCE_U8_LINEAR_0_255`
 
 Payloads are referenced by relative path and must be read as streams. Readers must not load full projects into memory.
 
@@ -120,7 +129,7 @@ Writers must:
 5. Move the temporary frame directory into `frames/00000001` only after required files exist.
 6. Update `manifest.json` through temp file and atomic rename.
 
-A frame directory is considered complete only when `frame.json`, payload files, and `checksum.sha256` are present.
+A frame directory is considered complete only when `frame.json`, every non-null referenced payload file, and `checksum.sha256` are present.
 
 ## Reader and Validator Behavior
 

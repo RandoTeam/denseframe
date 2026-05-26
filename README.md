@@ -62,6 +62,7 @@ Current Gradle modules:
 - `modules/design-system`: theme, colors, typography, and reusable Compose components.
 - `modules/project-store`: DFR v1 models, atomic writes, manifest/frame IO, streaming checksums, reader, and validator.
 - `modules/capture-api`: pure capture contracts, frame packet models, and deterministic session reducer.
+- `modules/capture-store`: deterministic bridge from pure `FramePacket` models into DFR v1 frame folders using project-store crash-safe writes.
 - `modules/capture-arcore`: placeholder for the future ARCore adapter.
 - `modules/capture-camerax`: placeholder for future CameraX support if approved.
 - `modules/reconstruction-api`: placeholder for reconstruction contracts.
@@ -72,7 +73,7 @@ Current Gradle modules:
 
 ## Current Status
 
-This repository contains the control plane, product docs, architecture docs, ADRs, agent definitions, repository skills, staged Codex prompts, an initial Android multi-module Compose shell, a DFR v1 project-store implementation, and pure capture API state machines. The shell does not implement scanning, reconstruction, Filament rendering, CameraX, ARCore, Room, analytics, cloud, or network behavior.
+This repository contains the control plane, product docs, architecture docs, ADRs, agent definitions, repository skills, staged Codex prompts, an initial Android multi-module Compose shell, a DFR v1 project-store implementation, pure capture API state machines, and a tested capture-to-DFR storage bridge. The shell does not implement scanning, reconstruction, Filament rendering, CameraX, ARCore, Room, analytics, cloud, or network behavior.
 
 ## Development Setup
 

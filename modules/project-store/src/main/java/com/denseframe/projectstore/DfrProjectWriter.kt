@@ -46,9 +46,12 @@ class DfrProjectWriter(
         Files.createDirectories(tempFrameDir)
         try {
             val payloadRefs = FramePayloadRefs(
-                colorYuv = request.payloads.colorYuv.fileName,
-                depthU16 = request.payloads.depthU16.fileName,
-                confidenceU8 = request.payloads.confidenceU8.fileName,
+                colorYuv = request.payloads.colorYuv?.fileName,
+                depthU16 = request.payloads.depthU16?.fileName,
+                confidenceU8 = request.payloads.confidenceU8?.fileName,
+                colorFormat = request.payloads.colorFormat,
+                depthFormat = request.payloads.depthFormat,
+                confidenceFormat = request.payloads.confidenceFormat,
             )
             val checksums = writePayloads(tempFrameDir, request.payloads, payloadRefs)
             val frameManifest = FrameManifest(
@@ -88,13 +91,15 @@ class DfrProjectWriter(
             refs.colorYuv to sources.colorYuv,
             refs.depthU16 to sources.depthU16,
             refs.confidenceU8 to sources.confidenceU8,
-        )
+        ).filter { (relativePath, source) -> relativePath != null || source != null }
         return ordered.map { (relativePath, source) ->
-            require(source.fileName == relativePath) { "Payload source file name mismatch: ${source.fileName}" }
-            val destination = frameDir.resolve(relativePath)
-            atomicFileWriter.writeStream(destination, source.openStream())
+            val payloadPath = requireNotNull(relativePath) { "Payload reference/source mismatch" }
+            val payloadSource = requireNotNull(source) { "Payload reference/source mismatch" }
+            require(payloadSource.fileName == payloadPath) { "Payload source file name mismatch: ${payloadSource.fileName}" }
+            val destination = frameDir.resolve(payloadPath)
+            atomicFileWriter.writeStream(destination, payloadSource.openStream())
             Checksum(
-                path = relativePath,
+                path = payloadPath,
                 algorithm = Sha256Checksum.ALGORITHM,
                 value = Sha256Checksum.file(destination),
             )

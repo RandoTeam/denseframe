@@ -6,8 +6,9 @@ This document defines the current Android skeleton boundaries. Placeholder modul
 
 - `app`: Android entry point, navigation, permissions, and dependency assembly.
 - `modules/design-system`: Compose theme, semantic colors, typography, and reusable UI components.
-- `modules/project-store`: placeholder for DenseFrame Raw Project read/write, manifests, checksums, atomic writes, and migrations.
-- `modules/capture-api`: placeholder for capture contracts independent of ARCore and CameraX.
+- `modules/project-store`: DenseFrame Raw Project read/write, manifests, checksums, atomic writes, optional payload references, validation, and migrations.
+- `modules/capture-api`: pure capture contracts independent of ARCore, CameraX, Android camera APIs, and storage.
+- `modules/capture-store`: deterministic adapter from `capture-api` `FramePacket` values to `project-store` DFR v1 frame writes. It may depend on `capture-api` and `project-store`; neither dependency points back to it.
 - `modules/capture-arcore`: placeholder for future ARCore depth adapter. No ARCore dependency yet.
 - `modules/capture-camerax`: placeholder for future CameraX integration if needed. No CameraX dependency yet.
 - `modules/reconstruction-api`: placeholder for deterministic reconstruction contracts and serializable parameters.
@@ -26,6 +27,8 @@ This document defines the current Android skeleton boundaries. Placeholder modul
 ## Boundary Rules
 
 - Capture does not depend on UI.
+- `capture-api` does not depend on storage.
+- `capture-store` does not depend on ARCore, CameraX, Android camera APIs, or UI.
 - Reconstruction reads storage through streaming interfaces.
 - Viewer consumes processed artifacts, not live ARCore sessions.
 - Storage owns crash safety and checksums.

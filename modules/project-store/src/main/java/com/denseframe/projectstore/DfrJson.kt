@@ -54,6 +54,7 @@ internal object DfrJson {
                 field("depthConfidence", frame.quality.depthConfidence)
                 field("coverage", frame.quality.coverage)
                 field("motionRisk", frame.quality.motionRisk)
+                field("blurRisk", frame.quality.blurRisk)
                 field("accepted", frame.quality.accepted)
                 field("dropReason", frame.quality.dropReason)
             }
@@ -61,6 +62,9 @@ internal object DfrJson {
                 field("colorYuv", frame.payloads.colorYuv)
                 field("depthU16", frame.payloads.depthU16)
                 field("confidenceU8", frame.payloads.confidenceU8)
+                field("colorFormat", frame.payloads.colorFormat)
+                field("depthFormat", frame.payloads.depthFormat)
+                field("confidenceFormat", frame.payloads.confidenceFormat)
             }
             fieldArray("checksums") {
                 frame.checksums.forEachIndexed { index, checksum ->
@@ -142,13 +146,17 @@ internal object DfrJson {
                 depthConfidence = quality.float("depthConfidence"),
                 coverage = quality.float("coverage"),
                 motionRisk = quality.float("motionRisk"),
+                blurRisk = quality.optionalFloat("blurRisk") ?: 0f,
                 accepted = quality.boolean("accepted"),
                 dropReason = quality.optionalString("dropReason"),
             ),
             payloads = FramePayloadRefs(
-                colorYuv = payloads.string("colorYuv"),
-                depthU16 = payloads.string("depthU16"),
-                confidenceU8 = payloads.string("confidenceU8"),
+                colorYuv = payloads.optionalString("colorYuv"),
+                depthU16 = payloads.optionalString("depthU16"),
+                confidenceU8 = payloads.optionalString("confidenceU8"),
+                colorFormat = payloads.optionalString("colorFormat"),
+                depthFormat = payloads.optionalString("depthFormat"),
+                confidenceFormat = payloads.optionalString("confidenceFormat"),
             ),
             checksums = checksums,
         )
@@ -389,6 +397,7 @@ private fun Map<String, Any?>.optionalString(key: String): String? = this[key] a
 private fun Map<String, Any?>.int(key: String): Int = numberField(key).toInt()
 private fun Map<String, Any?>.long(key: String): Long = numberField(key).toLong()
 private fun Map<String, Any?>.float(key: String): Float = numberField(key).toFloat()
+private fun Map<String, Any?>.optionalFloat(key: String): Float? = (this[key] as? Number)?.toFloat()
 private fun Map<String, Any?>.boolean(key: String): Boolean = this[key] as? Boolean ?: error("Expected boolean field $key")
 private fun Map<String, Any?>.numberField(key: String): Number = this[key] as? Number ?: error("Expected number field $key")
 private fun Any?.number(): Number = this as? Number ?: error("Expected JSON number")

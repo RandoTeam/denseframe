@@ -71,7 +71,7 @@ class DfrProjectReader {
         } catch (throwable: Throwable) {
             return listOf(FrameIssue(name, "Invalid frame.json: ${throwable.message}"))
         }
-        listOf(frame.payloads.colorYuv, frame.payloads.depthU16, frame.payloads.confidenceU8).forEach { relative ->
+        listOfNotNull(frame.payloads.colorYuv, frame.payloads.depthU16, frame.payloads.confidenceU8).forEach { relative ->
             if (!Files.exists(frameDir.resolve(relative))) {
                 issues += FrameIssue(name, "Missing payload: $relative")
             }

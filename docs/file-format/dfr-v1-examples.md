@@ -54,19 +54,70 @@ These examples show field names used by the initial `modules/project-store` impl
     "depthConfidence": 0.75,
     "coverage": 0.5,
     "motionRisk": 0.1,
+    "blurRisk": 0.2,
     "accepted": true,
     "dropReason": null
   },
   "payloads": {
     "colorYuv": "color.yuv",
     "depthU16": "depth_u16.bin",
-    "confidenceU8": "confidence_u8.bin"
+    "confidenceU8": "confidence_u8.bin",
+    "colorFormat": "YUV_420_888",
+    "depthFormat": "DEPTH_U16_MILLIMETERS_LITTLE_ENDIAN",
+    "confidenceFormat": "CONFIDENCE_U8_LINEAR_0_255"
   },
   "checksums": [
     {
       "path": "color.yuv",
       "algorithm": "sha256",
       "value": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81"
+    }
+  ]
+}
+```
+
+## Frame Manifest With Missing Depth
+
+```json
+{
+  "frameId": 2,
+  "timestampNanos": 123456790,
+  "trackingState": "tracking",
+  "cameraIntrinsics": {
+    "width": 2,
+    "height": 2,
+    "fx": 100.0,
+    "fy": 101.0,
+    "cx": 1.0,
+    "cy": 1.5
+  },
+  "poseMatrix": [
+    1.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0, 1.0
+  ],
+  "quality": {
+    "depthConfidence": 0.0,
+    "coverage": 0.4,
+    "motionRisk": 0.1,
+    "blurRisk": 0.2,
+    "accepted": true,
+    "dropReason": null
+  },
+  "payloads": {
+    "colorYuv": null,
+    "depthU16": null,
+    "confidenceU8": "confidence_u8.bin",
+    "colorFormat": null,
+    "depthFormat": null,
+    "confidenceFormat": "CONFIDENCE_U8_LINEAR_0_255"
+  },
+  "checksums": [
+    {
+      "path": "confidence_u8.bin",
+      "algorithm": "sha256",
+      "value": "73907589101a7e8ab83178e7db2997aab7272cd02d364e8e3ecc2beccda4b631"
     }
   ]
 }

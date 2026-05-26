@@ -81,14 +81,18 @@ data class FrameQuality(
     val depthConfidence: Float,
     val coverage: Float,
     val motionRisk: Float,
+    val blurRisk: Float = 0f,
     val accepted: Boolean,
     val dropReason: String? = null,
 )
 
 data class FramePayloadRefs(
-    val colorYuv: String,
-    val depthU16: String,
-    val confidenceU8: String,
+    val colorYuv: String?,
+    val depthU16: String?,
+    val confidenceU8: String?,
+    val colorFormat: String? = null,
+    val depthFormat: String? = null,
+    val confidenceFormat: String? = null,
 )
 
 data class Checksum(
@@ -98,9 +102,12 @@ data class Checksum(
 )
 
 data class FramePayloadSources(
-    val colorYuv: PayloadSource,
-    val depthU16: PayloadSource,
-    val confidenceU8: PayloadSource,
+    val colorYuv: PayloadSource? = null,
+    val depthU16: PayloadSource? = null,
+    val confidenceU8: PayloadSource? = null,
+    val colorFormat: String? = null,
+    val depthFormat: String? = null,
+    val confidenceFormat: String? = null,
 )
 
 data class PayloadSource(
